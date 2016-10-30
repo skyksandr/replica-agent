@@ -23,5 +23,9 @@ module Jobs
       current_time = Time.new
       Time.parse "#{current_time.year}-#{current_time.month}-#{current_time.day}"
     end
+
+    def config
+      @config ||= YAML.load_file './config.yml'
+    end
   end
 end
