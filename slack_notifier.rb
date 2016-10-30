@@ -11,7 +11,11 @@ module Support
 
     def message(text)
       request = Net::HTTP::Post.new(uri.request_uri)
-      params = {text: text}
+      params = {
+        text: text,
+        username: 'Replica agent',
+        icon_emoji: ':gem:'
+      }
       request.body = params.to_json
       request
     end
