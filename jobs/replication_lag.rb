@@ -1,6 +1,6 @@
 module Jobs
   class ReplicationLag
-    ALLOWED_LAG_IN_SECONDS = 120
+    ALLOWED_LAG_IN_SECONDS = 180
 
     def start
       loop do
@@ -22,10 +22,6 @@ module Jobs
     def beginning_of_the_day
       current_time = Time.new
       Time.parse "#{current_time.year}-#{current_time.month}-#{current_time.day}"
-    end
-
-    def config
-      @config ||= YAML.load_file './config.yml'
     end
   end
 end

@@ -40,6 +40,11 @@ def notify(text)
   @notifier.notify(text)
 end
 
+def config
+  path = File.join(File.dirname(__FILE__), 'config.yml')
+  @config ||= YAML.load_file path
+end
+
 # Start agent 
 agent = Agent.new
 trap 'INT' do agent.shutdown end

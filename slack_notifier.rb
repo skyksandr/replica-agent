@@ -27,9 +27,5 @@ module Support
     def uri
       @uri ||= URI.parse(config["slack_url"])
     end
-
-    def config
-      @config ||= YAML.load_file './config.yml'
-    end
   end
 end
