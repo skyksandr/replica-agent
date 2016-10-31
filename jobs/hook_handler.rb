@@ -8,7 +8,9 @@ module Jobs
       @server.mount_proc '/' do |request, _|
         next unless request.request_uri.path == "/#{config['hook_key']}"
         next unless hook_valid?(request.body)
-        handle_hook
+        Thread.new do
+          handle_hook
+        end
       end
 
       @server.start
@@ -21,15 +23,18 @@ module Jobs
     private
     
     def handle_hook
-      notify('New image pushed to Docker Hub. Pulling...')
-      %x( docker pull #{config['image_name']}:#{config['image_tag']} )
-      notify('Deploying latest backup to staging db')
-      notify('Deploying app container')
+      notify 'New image pushed to Docker Hub. Pulling...'
+      notify %x( docker pull #{config['image_name']}:#{config['image_tag']} )
+      notify 'Deploying latest backup to staging db'
+      notify 'Deploying app container'
     end
 
     def hook_valid?(req_body)
       req_hash = JSON.parse(req_body)
-      req_hash.dig('push_data', 'tag') == config['imgage_tag']
+      pushed_tag = req_hash.dig('push_data', 'tag')
+      hook_on_tag = config['image_tag']
+
+      pushed_tag == hook_on_tag
     end
   end
 end
