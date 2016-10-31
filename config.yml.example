@@ -1,3 +1,11 @@
+# Notifications
 slack_url: 'https://hooks.slack.com/services/...'
+
+# Replication lag
 container_name: your_db_container_name
 db_user: your_db_user
+
+# Docker Hub webhooks
+image_name: 'your/app'
+image_tag: some_key
+hook_key: 'secret_key'
