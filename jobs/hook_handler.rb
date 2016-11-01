@@ -3,9 +3,9 @@ require 'webrick'
 module Jobs
   class HookHandler
     def start
-      @server = WEBrick::HTTPServer.new Port: 10080
+      server = WEBrick::HTTPServer.new Port: 10080
 
-      @server.mount_proc '/' do |request, _|
+      server.mount_proc '/' do |request, _|
         next unless request.request_uri.path == "/#{config['hook_key']}"
         next unless hook_valid?(request.body)
         Thread.new do
@@ -13,11 +13,7 @@ module Jobs
         end
       end
 
-      @server.start
-    end
-
-    def shutdown
-      @server.shutdown
+      server.start
     end
 
     private

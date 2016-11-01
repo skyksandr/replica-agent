@@ -15,6 +15,8 @@ class Agent
   end
 
   def start  
+    Thread.abort_on_exception = true
+
     jobs = ::Jobs.constants.select { |c| Jobs.const_get(c).is_a? Class }
     jobs.map! { |c| Jobs.const_get(c) }
     jobs.each do |job|
